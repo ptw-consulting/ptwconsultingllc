@@ -105,7 +105,7 @@ function Hero() {
             </span>
           </h1>
           <p className="text-lg text-white/40 max-w-lg leading-relaxed">
-            We help small businesses adopt AI successfully — faster
+            We help established businesses become AI native — faster
             operations, less busywork, real results.
           </p>
           <button
