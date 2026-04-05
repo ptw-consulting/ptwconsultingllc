@@ -105,7 +105,7 @@ function Hero() {
             </span>
           </h1>
           <p className="text-lg text-white/40 max-w-lg leading-relaxed">
-            We help small businesses adopt AI that actually works — faster
+            We help small businesses adopt AI successfully — faster
             operations, less busywork, real results.
           </p>
           <button
@@ -115,6 +115,39 @@ function Hero() {
             Start the conversation
           </button>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── HALO ─────────────────────────────────────────────────────────────── */
+function Halo() {
+  return (
+    <section className="py-24 px-6 relative">
+      <DotGrid />
+      <div className="max-w-5xl mx-auto">
+        <FadeIn>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+            Who we work with
+          </p>
+        </FadeIn>
+        <FadeIn delay={0.06}>
+          <div className="rounded-2xl p-10 sm:p-14 bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-[80px]" />
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 relative">
+              HALO Businesses
+            </h2>
+            <p className="text-base text-white/40 max-w-2xl mb-6 leading-relaxed relative">
+              <span className="text-white/70 font-medium">High Asset, Low Obsolescence.</span>{" "}
+              Established companies with real revenue, real customers, and decades of domain
+              expertise — but whose operations haven&apos;t kept up with the technology.
+            </p>
+            <p className="text-base text-white/40 max-w-2xl leading-relaxed relative">
+              These businesses aren&apos;t broken. They&apos;re underleveraged. AI doesn&apos;t
+              replace what makes them great — it amplifies it.
+            </p>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
@@ -292,6 +325,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <Halo />
         <Services />
         <CaseStudy />
         <Team />
