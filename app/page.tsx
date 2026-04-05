@@ -267,7 +267,7 @@ function Team() {
             {
               name: "Dejan Cabrilo",
               role: "Technical Partner",
-              bio: "Former CTO of Theme Analytics. 7 years as Director of Engineering at Bonfire.com. Extensive crypto experience. AI-native.",
+              bio: "Former CTO of Theme Analytics. 7 years as Director of Engineering at Bonfire.com. Extensive AI & Crypto experience.",
               linkedin: "https://www.linkedin.com/in/dejan-cabrilo-715a411/",
             },
           ].map((p, i) => (
