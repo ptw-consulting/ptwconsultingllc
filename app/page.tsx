@@ -1,65 +1,303 @@
-import Image from "next/image";
+"use client";
 
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import ContactForm from "@/components/ContactForm";
+
+function FadeIn({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─── Animated mesh gradient ─────────────────────────────────────────── */
+function MeshGradient() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+      <div className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full opacity-20 blur-[120px] bg-indigo-600 animate-pulse" style={{ animationDuration: "8s" }} />
+      <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full opacity-15 blur-[120px] bg-cyan-500 animate-pulse" style={{ animationDuration: "12s" }} />
+      <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] rounded-full opacity-10 blur-[100px] bg-violet-500 animate-pulse" style={{ animationDuration: "10s" }} />
+    </div>
+  );
+}
+
+/* ─── Subtle dot grid ────────────────────────────────────────────────── */
+function DotGrid() {
+  return (
+    <div
+      className="absolute inset-0 -z-10 opacity-[0.08]"
+      aria-hidden
+      style={{
+        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)",
+        backgroundSize: "32px 32px",
+      }}
+    />
+  );
+}
+
+/* ─── Nav ─────────────────────────────────────────────────────────────── */
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  return (
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-[#050505]/70 backdrop-blur-xl border-b border-white/[0.06]" : ""
+      }`}
+    >
+      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <span className="text-sm font-medium tracking-tight text-white/90">
+          PTW Consulting
+        </span>
+        <button
+          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+          className="text-xs font-medium px-4 py-1.5 rounded-full bg-white/[0.08] text-white/80 hover:bg-white/[0.14] border border-white/[0.06] transition-all duration-200 hover:text-white"
+        >
+          Get in touch
+        </button>
+      </div>
+    </header>
+  );
+}
+
+/* ─── Hero ─────────────────────────────────────────────────────────────── */
+function Hero() {
+  return (
+    <section className="relative min-h-screen flex flex-col justify-center px-6">
+      <MeshGradient />
+      <DotGrid />
+      <div className="max-w-5xl mx-auto w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-6"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs text-white/50 tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            AI Transformation
+          </div>
+          <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.08] text-white">
+            You built something great.
+            <br />
+            <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+              Now let AI take it further.
+            </span>
+          </h1>
+          <p className="text-lg text-white/40 max-w-lg leading-relaxed">
+            We help small businesses adopt AI that actually works — faster
+            operations, less busywork, real results.
+          </p>
+          <button
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            className="mt-2 px-6 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
+          >
+            Start the conversation
+          </button>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Services ─────────────────────────────────────────────────────────── */
+function Services() {
+  const items = [
+    {
+      icon: "01",
+      title: "AI Readiness",
+      body: "Find where AI creates the most leverage in your business.",
+    },
+    {
+      icon: "02",
+      title: "Workflow Automation",
+      body: "Automate the repetitive work that slows your team down.",
+    },
+    {
+      icon: "03",
+      title: "Custom Tooling",
+      body: "Purpose-built AI tools designed for how you actually operate.",
+    },
+    {
+      icon: "04",
+      title: "Team Enablement",
+      body: "Train your people until AI is just part of how things run.",
+    },
+  ];
+
+  return (
+    <section className="py-24 px-6 relative">
+      <DotGrid />
+      <div className="max-w-5xl mx-auto">
+        <FadeIn>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+            What we do
+          </p>
+        </FadeIn>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {items.map((s, i) => (
+            <FadeIn key={s.title} delay={i * 0.06}>
+              <div className="group rounded-2xl p-7 bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-300">
+                <span className="text-sm font-mono text-white/20 group-hover:text-indigo-400 transition-colors">
+                  {s.icon}
+                </span>
+                <h3 className="text-lg font-medium text-white/90 mt-4 mb-2">
+                  {s.title}
+                </h3>
+                <p className="text-sm text-white/40 leading-relaxed">{s.body}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Case Study ───────────────────────────────────────────────────────── */
+function CaseStudy() {
+  return (
+    <section id="work" className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <FadeIn>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-10 sm:p-14 relative overflow-hidden">
+            {/* subtle accent glow */}
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-[80px]" />
+
+            <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-4 font-mono relative">
+              Case Study
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 relative">
+              Boston Tree Preservation
+            </h2>
+            <p className="text-base text-white/40 max-w-lg mb-10 leading-relaxed relative">
+              Modernized a 45-year-old company from paper to digital — and
+              unlocked it for a successful acquisition.
+            </p>
+            <div className="flex flex-wrap gap-2 relative">
+              {["Paper → Digital", "Salesforce CRM", "40+ person team", "Acquisition-ready"].map(
+                (tag) => (
+                  <span
+                    key={tag}
+                    className="text-sm px-4 py-1.5 rounded-full bg-white/[0.06] text-white/50 border border-white/[0.06]"
+                  >
+                    {tag}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Team ──────────────────────────────────────────────────────────────── */
+function Team() {
+  return (
+    <section className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <FadeIn>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+            The team
+          </p>
+        </FadeIn>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {[
+            {
+              name: "Pete Wild",
+              role: "Managing Partner",
+              bio: "Quant fund co-founder. FAANG AI product exec. Led the digital transformation that unlocked Boston Tree Preservation for acquisition.",
+            },
+            {
+              name: "Dejan Cabrilo",
+              role: "Technical Partner",
+              bio: "Former CTO of Theme Analytics. 7 years as Director of Engineering at Bonfire.com. Extensive crypto experience. AI-native.",
+            },
+          ].map((p, i) => (
+            <FadeIn key={p.name} delay={i * 0.08}>
+              <div className="rounded-2xl p-7 bg-white/[0.02] border border-white/[0.06]">
+                <h3 className="text-lg font-medium text-white">{p.name}</h3>
+                <p className="text-sm text-indigo-400/70 mb-3">{p.role}</p>
+                <p className="text-base text-white/40 leading-relaxed">{p.bio}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Contact ──────────────────────────────────────────────────────────── */
+function Contact() {
+  return (
+    <section id="contact" className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          <FadeIn>
+            <h2 className="text-4xl font-semibold tracking-tight text-white mb-3">
+              Let&apos;s talk.
+            </h2>
+            <p className="text-base text-white/40">
+              We take on a small number of clients at a time.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.08}>
+            <ContactForm />
+          </FadeIn>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Footer ───────────────────────────────────────────────────────────── */
+function Footer() {
+  return (
+    <footer className="border-t border-white/[0.06] px-6 py-5">
+      <div className="max-w-5xl mx-auto flex justify-between items-center text-xs text-white/25">
+        <span>© {new Date().getFullYear()} PTW Consulting LLC</span>
+        <span>Miami, FL</span>
+      </div>
+    </footer>
+  );
+}
+
+/* ─── Page ─────────────────────────────────────────────────────────────── */
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Nav />
+      <main>
+        <Hero />
+        <Services />
+        <CaseStudy />
+        <Team />
+        <Contact />
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
