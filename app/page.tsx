@@ -123,7 +123,7 @@ function Hero() {
 /* ─── HALO ─────────────────────────────────────────────────────────────── */
 function Halo() {
   return (
-    <section className="py-24 px-6 relative">
+    <section className="py-14 px-6 relative">
       <DotGrid />
       <div className="max-w-5xl mx-auto">
         <FadeIn>
@@ -140,11 +140,11 @@ function Halo() {
             <p className="text-base text-white/40 max-w-2xl mb-6 leading-relaxed relative">
               <span className="text-white/70 font-medium">High Asset, Low Obsolescence.</span>{" "}
               Established companies with real revenue, real customers, and decades of domain
-              expertise — but whose operations haven&apos;t kept up with the technology.
+              expertise — the kind of businesses that are already winning.
             </p>
             <p className="text-base text-white/40 max-w-2xl leading-relaxed relative">
-              These businesses aren&apos;t broken. They&apos;re underleveraged. AI doesn&apos;t
-              replace what makes them great — it amplifies it.
+              AI is the next edge. We help these companies through their AI Transformation,
+              so the lead they&apos;ve built only gets bigger.
             </p>
           </div>
         </FadeIn>
@@ -179,7 +179,7 @@ function Services() {
   ];
 
   return (
-    <section className="py-24 px-6 relative">
+    <section className="py-14 px-6 relative">
       <DotGrid />
       <div className="max-w-5xl mx-auto">
         <FadeIn>
@@ -210,7 +210,7 @@ function Services() {
 /* ─── Case Study ───────────────────────────────────────────────────────── */
 function CaseStudy() {
   return (
-    <section id="work" className="py-24 px-6">
+    <section id="work" className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <FadeIn>
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-10 sm:p-14 relative overflow-hidden">
@@ -228,7 +228,7 @@ function CaseStudy() {
               unlocked it for a successful acquisition.
             </p>
             <div className="flex flex-wrap gap-2 relative">
-              {["Paper → Digital", "Salesforce CRM", "40+ person team", "Acquisition-ready"].map(
+              {["Paper → Digital", "Salesforce CRM", "Acquisition-ready"].map(
                 (tag) => (
                   <span
                     key={tag}
@@ -249,7 +249,7 @@ function CaseStudy() {
 /* ─── Team ──────────────────────────────────────────────────────────────── */
 function Team() {
   return (
-    <section className="py-24 px-6">
+    <section className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <FadeIn>
           <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
@@ -261,7 +261,7 @@ function Team() {
             {
               name: "Pete Wild",
               role: "Managing Partner",
-              bio: "Quant fund co-founder. FAANG AI product exec. Led the digital transformation that unlocked Boston Tree Preservation for acquisition.",
+              bio: "Quant fund co-founder. FAANG AI product exec. Built and shipped AI products used by billions of people.",
             },
             {
               name: "Dejan Cabrilo",
@@ -286,7 +286,7 @@ function Team() {
 /* ─── Contact ──────────────────────────────────────────────────────────── */
 function Contact() {
   return (
-    <section id="contact" className="py-24 px-6">
+    <section id="contact" className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <FadeIn>
