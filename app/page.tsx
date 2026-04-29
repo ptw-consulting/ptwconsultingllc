@@ -207,40 +207,71 @@ function Services() {
   );
 }
 
-/* ─── Case Study ───────────────────────────────────────────────────────── */
+/* ─── Case Studies ─────────────────────────────────────────────────────── */
 function CaseStudy() {
+  const studies = [
+    {
+      name: "Boston Tree Preservation",
+      blurb:
+        "Modernized a 45-year-old company from paper to digital — and unlocked it for a successful acquisition.",
+      tags: ["Paper → Digital", "Salesforce CRM", "Acquisition-ready"],
+      glow: "bg-indigo-500/10",
+    },
+    {
+      name: "Commercial Real Estate Owner",
+      blurb:
+        "Industrial / office building owner. Replacing the spreadsheet-and-PDF stack with AI-native ops: automated rent invoicing and NNN reconciliation, lease-clause search across the full tenant portfolio, drafted tenant communications, and deadline tracking the owner used to do by hand.",
+      tags: [
+        "Automated billing",
+        "Lease intelligence",
+        "Tenant comms",
+        "NNN reconciliation",
+      ],
+      glow: "bg-emerald-500/10",
+      confidential: true,
+    },
+  ];
+
   return (
     <section id="work" className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-10 sm:p-14 relative overflow-hidden">
-            {/* subtle accent glow */}
-            <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-[80px]" />
-
-            <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-4 font-mono relative">
-              Case Study
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 relative">
-              Boston Tree Preservation
-            </h2>
-            <p className="text-base text-white/40 max-w-lg mb-10 leading-relaxed relative">
-              Modernized a 45-year-old company from paper to digital — and
-              unlocked it for a successful acquisition.
-            </p>
-            <div className="flex flex-wrap gap-2 relative">
-              {["Paper → Digital", "Salesforce CRM", "Acquisition-ready"].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    className="text-sm px-4 py-1.5 rounded-full bg-white/[0.06] text-white/50 border border-white/[0.06]"
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+            Case Studies
+          </p>
         </FadeIn>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {studies.map((s, i) => (
+            <FadeIn key={s.name} delay={i * 0.06}>
+              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 sm:p-10 relative overflow-hidden h-full">
+                <div
+                  className={`absolute -top-20 -right-20 w-60 h-60 rounded-full blur-[80px] ${s.glow}`}
+                />
+                {s.confidential && (
+                  <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-white/30 font-mono">
+                    Confidential
+                  </span>
+                )}
+                <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-4 relative pr-24">
+                  {s.name}
+                </h2>
+                <p className="text-base text-white/40 mb-8 leading-relaxed relative">
+                  {s.blurb}
+                </p>
+                <div className="flex flex-wrap gap-2 relative">
+                  {s.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-3 py-1.5 rounded-full bg-white/[0.06] text-white/50 border border-white/[0.06]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );
