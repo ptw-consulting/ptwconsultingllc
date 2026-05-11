@@ -100,7 +100,7 @@ function Hero() {
           <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.08] text-foreground">
             You built something great.
             <br />
-            <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 light:from-indigo-600 light:via-cyan-600 light:to-emerald-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-teal-400 light:from-indigo-600 light:via-cyan-600 light:to-teal-500 bg-clip-text text-transparent">
               Now let AI take it further.
             </span>
           </h1>
