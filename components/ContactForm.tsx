@@ -24,15 +24,15 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-8 text-center">
-        <p className="text-white font-medium mb-1">Message received.</p>
-        <p className="text-sm text-white/40">We&apos;ll be in touch shortly.</p>
+      <div className="rounded-xl border border-border bg-foreground/[0.02] p-8 text-center">
+        <p className="text-foreground font-medium mb-1">Message received.</p>
+        <p className="text-sm text-foreground/40">We&apos;ll be in touch shortly.</p>
       </div>
     );
   }
 
   const inputClass =
-    "w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3.5 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-white/20 focus:bg-white/[0.06] transition-all";
+    "w-full bg-foreground/[0.04] border border-foreground/[0.08] rounded-lg px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 focus:bg-foreground/[0.06] transition-all";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
@@ -53,7 +53,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full py-2.5 rounded-lg bg-white text-black text-sm font-medium hover:bg-white/90 disabled:opacity-50 transition-colors"
+        className="w-full py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
       >
         {status === "submitting" ? "Sending..." : "Send message"}
       </button>

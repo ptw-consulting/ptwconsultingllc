@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
 @theme inline {
   --color-background: var(--background);
@@ -30,26 +31,56 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-:root {
+/* Default = dark theme. The no-flash inline script in layout.tsx sets
+   data-theme on <html> before paint, so [data-theme="dark"] always wins. */
+:root,
+[data-theme="dark"] {
+  --ink: 255 255 255;
   --background: #050505;
   --foreground: #ededed;
-  --card: rgba(255, 255, 255, 0.03);
+  --card: rgb(var(--ink) / 0.03);
   --card-foreground: #ededed;
   --popover: #0a0a0a;
   --popover-foreground: #ededed;
   --primary: #ededed;
   --primary-foreground: #050505;
-  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary: rgb(var(--ink) / 0.06);
   --secondary-foreground: #ededed;
-  --muted: rgba(255, 255, 255, 0.06);
+  --muted: rgb(var(--ink) / 0.06);
   --muted-foreground: #888;
-  --accent: rgba(255, 255, 255, 0.08);
+  --accent: rgb(var(--ink) / 0.08);
   --accent-foreground: #ededed;
   --destructive: #ef4444;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: rgba(255, 255, 255, 0.2);
+  --border: rgb(var(--ink) / 0.08);
+  --input: rgb(var(--ink) / 0.08);
+  --ring: rgb(var(--ink) / 0.2);
   --radius: 0.625rem;
+  --selection-bg: rgba(99, 102, 241, 0.4);
+  --selection-fg: #ffffff;
+}
+
+[data-theme="light"] {
+  --ink: 0 0 0;
+  --background: #fafafa;
+  --foreground: #0a0a0a;
+  --card: rgb(var(--ink) / 0.02);
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafafa;
+  --secondary: rgb(var(--ink) / 0.04);
+  --secondary-foreground: #0a0a0a;
+  --muted: rgb(var(--ink) / 0.05);
+  --muted-foreground: #6b7280;
+  --accent: rgb(var(--ink) / 0.06);
+  --accent-foreground: #0a0a0a;
+  --destructive: #dc2626;
+  --border: rgb(var(--ink) / 0.08);
+  --input: rgb(var(--ink) / 0.08);
+  --ring: rgb(var(--ink) / 0.2);
+  --selection-bg: rgba(99, 102, 241, 0.25);
+  --selection-fg: #0a0a0a;
 }
 
 @layer base {
@@ -63,6 +94,39 @@
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.4);
-  color: white;
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+/* Theme-aware dot grid — opacity baked into the radial-gradient stops */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgb(var(--ink) / 0.5) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+}
+
+/* View Transitions: circular reveal of the new theme from the toggle's center.
+   The animation itself (clip-path keyframes + origin coords) is driven from
+   ThemeToggle.tsx via Element.animate(). Here we just neutralize the default
+   cross-fade on the old snapshot so the new one cleanly wipes over it. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }

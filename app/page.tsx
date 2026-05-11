@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
+import ThemeToggle from "@/components/ThemeToggle";
 
 function FadeIn({
   children,
@@ -29,9 +30,9 @@ function FadeIn({
 function MeshGradient() {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-      <div className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full opacity-20 blur-[120px] bg-indigo-600 animate-pulse" style={{ animationDuration: "8s" }} />
-      <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full opacity-15 blur-[120px] bg-cyan-500 animate-pulse" style={{ animationDuration: "12s" }} />
-      <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] rounded-full opacity-10 blur-[100px] bg-violet-500 animate-pulse" style={{ animationDuration: "10s" }} />
+      <div className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full opacity-20 blur-[120px] bg-indigo-600 animate-pulse light:opacity-25" style={{ animationDuration: "8s" }} />
+      <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full opacity-15 blur-[120px] bg-cyan-500 animate-pulse light:opacity-20" style={{ animationDuration: "12s" }} />
+      <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] rounded-full opacity-10 blur-[100px] bg-violet-500 animate-pulse light:opacity-15" style={{ animationDuration: "10s" }} />
     </div>
   );
 }
@@ -40,12 +41,8 @@ function MeshGradient() {
 function DotGrid() {
   return (
     <div
-      className="absolute inset-0 -z-10 opacity-[0.08]"
+      className="absolute inset-0 -z-10 opacity-[0.08] dot-grid"
       aria-hidden
-      style={{
-        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
-      }}
     />
   );
 }
@@ -62,19 +59,22 @@ function Nav() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-[#050505]/70 backdrop-blur-xl border-b border-white/[0.06]" : ""
+        scrolled ? "bg-background/70 backdrop-blur-xl border-b border-border" : ""
       }`}
     >
       <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <span className="text-sm font-medium tracking-tight text-white/90">
+        <span className="text-sm font-medium tracking-tight text-foreground/90">
           PTW Consulting
         </span>
-        <button
-          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-          className="text-xs font-medium px-4 py-1.5 rounded-full bg-white/[0.08] text-white/80 hover:bg-white/[0.14] border border-white/[0.06] transition-all duration-200 hover:text-white"
-        >
-          Get in touch
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-xs font-medium px-4 py-1.5 rounded-full bg-foreground/[0.08] text-foreground/80 hover:bg-foreground/[0.14] border border-border transition-all duration-200 hover:text-foreground"
+          >
+            Get in touch
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -93,24 +93,24 @@ function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-6"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs text-white/50 tracking-wide">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/[0.06] border border-border text-xs text-foreground/50 tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             AI Transformation
           </div>
-          <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.08] text-white">
+          <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.08] text-foreground">
             You built something great.
             <br />
             <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
               Now let AI take it further.
             </span>
           </h1>
-          <p className="text-lg text-white/40 max-w-lg leading-relaxed">
+          <p className="text-lg text-foreground/40 max-w-lg leading-relaxed">
             We help established businesses become AI native — faster
             operations, less busywork, real results.
           </p>
           <button
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="mt-2 px-6 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
+            className="mt-2 px-6 py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             Start the conversation
           </button>
@@ -127,22 +127,22 @@ function Halo() {
       <DotGrid />
       <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] text-foreground/30 mb-8 font-mono">
             Who we work with
           </p>
         </FadeIn>
         <FadeIn delay={0.06}>
-          <div className="rounded-2xl p-10 sm:p-14 bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+          <div className="rounded-2xl p-10 sm:p-14 bg-foreground/[0.02] border border-border relative overflow-hidden">
             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-[80px]" />
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4 relative">
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4 relative">
               HALO Businesses
             </h2>
-            <p className="text-base text-white/40 max-w-2xl mb-6 leading-relaxed relative">
-              <span className="text-white/70 font-medium">High Asset, Low Obsolescence.</span>{" "}
+            <p className="text-base text-foreground/40 max-w-2xl mb-6 leading-relaxed relative">
+              <span className="text-foreground/70 font-medium">High Asset, Low Obsolescence.</span>{" "}
               Established companies with real revenue, real customers, and decades of domain
               expertise — the kind of businesses that are already winning.
             </p>
-            <p className="text-base text-white/40 max-w-2xl leading-relaxed relative">
+            <p className="text-base text-foreground/40 max-w-2xl leading-relaxed relative">
               AI is the next edge. We help these companies through their AI Transformation,
               so the lead they&apos;ve built only gets bigger.
             </p>
@@ -183,21 +183,21 @@ function Services() {
       <DotGrid />
       <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] text-foreground/30 mb-8 font-mono">
             What we do
           </p>
         </FadeIn>
         <div className="grid sm:grid-cols-2 gap-4">
           {items.map((s, i) => (
             <FadeIn key={s.title} delay={i * 0.06}>
-              <div className="group rounded-2xl p-7 bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-300">
-                <span className="text-sm font-mono text-white/20 group-hover:text-indigo-400 transition-colors">
+              <div className="group rounded-2xl p-7 bg-foreground/[0.02] border border-border hover:border-foreground/[0.12] hover:bg-foreground/[0.04] transition-all duration-300">
+                <span className="text-sm font-mono text-foreground/20 group-hover:text-indigo-400 transition-colors">
                   {s.icon}
                 </span>
-                <h3 className="text-lg font-medium text-white/90 mt-4 mb-2">
+                <h3 className="text-lg font-medium text-foreground/90 mt-4 mb-2">
                   {s.title}
                 </h3>
-                <p className="text-sm text-white/40 leading-relaxed">{s.body}</p>
+                <p className="text-sm text-foreground/40 leading-relaxed">{s.body}</p>
               </div>
             </FadeIn>
           ))}
@@ -236,33 +236,33 @@ function CaseStudy() {
     <section id="work" className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] text-foreground/30 mb-8 font-mono">
             Case Studies
           </p>
         </FadeIn>
         <div className="grid sm:grid-cols-2 gap-4">
           {studies.map((s, i) => (
             <FadeIn key={s.name} delay={i * 0.06}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 sm:p-10 relative overflow-hidden h-full">
+              <div className="rounded-2xl border border-border bg-foreground/[0.02] p-8 sm:p-10 relative overflow-hidden h-full">
                 <div
                   className={`absolute -top-20 -right-20 w-60 h-60 rounded-full blur-[80px] ${s.glow}`}
                 />
                 {s.confidential && (
-                  <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-white/30 font-mono">
+                  <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-mono">
                     Confidential
                   </span>
                 )}
-                <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-4 relative pr-24">
+                <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4 relative pr-24">
                   {s.name}
                 </h2>
-                <p className="text-base text-white/40 mb-8 leading-relaxed relative">
+                <p className="text-base text-foreground/40 mb-8 leading-relaxed relative">
                   {s.blurb}
                 </p>
                 <div className="flex flex-wrap gap-2 relative">
                   {s.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-3 py-1.5 rounded-full bg-white/[0.06] text-white/50 border border-white/[0.06]"
+                      className="text-xs px-3 py-1.5 rounded-full bg-foreground/[0.06] text-foreground/50 border border-border"
                     >
                       {tag}
                     </span>
@@ -283,7 +283,7 @@ function Team() {
     <section className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <FadeIn>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/30 mb-8 font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] text-foreground/30 mb-8 font-mono">
             The team
           </p>
         </FadeIn>
@@ -303,14 +303,14 @@ function Team() {
             },
           ].map((p, i) => (
             <FadeIn key={p.name} delay={i * 0.08}>
-              <div className="rounded-2xl p-7 bg-white/[0.02] border border-white/[0.06]">
+              <div className="rounded-2xl p-7 bg-foreground/[0.02] border border-border">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-white">{p.name}</h3>
+                  <h3 className="text-lg font-medium text-foreground">{p.name}</h3>
                   <a
                     href={p.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/30 hover:text-white/70 transition-colors"
+                    className="text-foreground/30 hover:text-foreground/70 transition-colors"
                     aria-label={`${p.name} on LinkedIn`}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ function Team() {
                   </a>
                 </div>
                 <p className="text-sm text-indigo-400/70 mb-3">{p.role}</p>
-                <p className="text-base text-white/40 leading-relaxed">{p.bio}</p>
+                <p className="text-base text-foreground/40 leading-relaxed">{p.bio}</p>
               </div>
             </FadeIn>
           ))}
@@ -336,10 +336,10 @@ function Contact() {
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <FadeIn>
-            <h2 className="text-4xl font-semibold tracking-tight text-white mb-3">
+            <h2 className="text-4xl font-semibold tracking-tight text-foreground mb-3">
               Let&apos;s talk.
             </h2>
-            <p className="text-base text-white/40">
+            <p className="text-base text-foreground/40">
               We take on a small number of clients at a time.
             </p>
           </FadeIn>
@@ -355,8 +355,8 @@ function Contact() {
 /* ─── Footer ───────────────────────────────────────────────────────────── */
 function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] px-6 py-5">
-      <div className="max-w-5xl mx-auto flex justify-between items-center text-xs text-white/25">
+    <footer className="border-t border-border px-6 py-5">
+      <div className="max-w-5xl mx-auto flex justify-between items-center text-xs text-foreground/25">
         <span>© {new Date().getFullYear()} PTW Consulting LLC</span>
         <span>Miami, FL</span>
       </div>
