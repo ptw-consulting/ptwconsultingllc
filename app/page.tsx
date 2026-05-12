@@ -427,7 +427,7 @@ function Team() {
             {
               name: "Pete Wild",
               role: "Managing Partner",
-              bio: "Quant fund co-founder. FAANG AI product exec. Built and shipped AI products used by billions of people.",
+              bio: "Drives AI model training quality at Meta. Quant fund co-founder. Helps established businesses make AI actually work.",
               linkedin: "https://www.linkedin.com/in/petertwild/",
             },
             {
