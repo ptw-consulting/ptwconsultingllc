@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -220,18 +220,14 @@ type Study = {
 function CaseStudy() {
   const studies: Study[] = [
     {
-      name: "SEC Reg D 506(c) Accreditation Verification",
-      kicker: "AI-native compliance SaaS",
+      name: "Investor Accreditation Verification",
+      kicker: "Custom build for a Reg D 506(c) fund",
       blurb:
-        "Production web app that automates the accredited-investor verification process — the manual, attorney-billed workflow that funds pay big-law thousands per investor to run. Self-serve flows for net-worth, income, professional-letter, and appeal, with human-in-the-loop review only on edge cases.",
+        "A verification app that automates the accredited-investor checks 506(c) funds normally pay big-law thousands per investor to run. Self-serve flows for net-worth, income, and professional-letter — human review only on edge cases.",
       tags: [
-        "Next.js + Clerk",
-        "Postgres + Drizzle",
-        "Plaid income/asset pulls",
         "OpenAI doc review",
+        "Plaid income/asset pulls",
         "Async S3/SQS pipelines",
-        "SendGrid notifications",
-        "Backoffice review tooling",
       ],
       glow: "bg-cyan-500/10",
       confidential: true,
@@ -258,23 +254,27 @@ function CaseStudy() {
     },
   ];
 
-  const [[index, direction], setState] = useState<[number, number]>([0, 0]);
+  const [index, setIndex] = useState(0);
   const count = studies.length;
   const advance = (delta: number) =>
-    setState(([i]) => [(i + delta + count) % count, delta]);
+    setIndex((i) => (i + delta + count) % count);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight")
-        setState(([i]) => [(i + 1) % count, 1]);
+      if (e.key === "ArrowRight") setIndex((i) => (i + 1) % count);
       else if (e.key === "ArrowLeft")
-        setState(([i]) => [(i - 1 + count) % count, -1]);
+        setIndex((i) => (i - 1 + count) % count);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [count]);
 
-  const study = studies[index];
+  // Each slide is 88% of the track width; gap is 1rem between slides.
+  // Offset of 6% keeps the active slide centered with a peek of the
+  // neighboring slides on either side.
+  const slideWidthPct = 88;
+  const gapRem = 1;
+  const trackX = `calc(6% - ${index} * (${slideWidthPct}% + ${gapRem}rem))`;
 
   return (
     <section id="work" className="py-14 px-6">
@@ -292,55 +292,68 @@ function CaseStudy() {
 
         <FadeIn>
           <div className="relative">
-            <div className="relative overflow-hidden">
-              <AnimatePresence mode="wait" custom={direction} initial={false}>
-                <motion.div
-                  key={index}
-                  custom={direction}
-                  initial={{ opacity: 0, x: direction > 0 ? 60 : -60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction > 0 ? -60 : 60 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={(_, info) => {
-                    if (info.offset.x < -60) advance(1);
-                    else if (info.offset.x > 60) advance(-1);
-                  }}
-                  className="rounded-2xl border border-border bg-foreground/[0.02] p-8 sm:p-12 relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
-                >
+            <div
+              className="relative overflow-hidden"
+              style={{
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
+                maskImage:
+                  "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
+              }}
+            >
+              <motion.div
+                className="flex items-stretch gap-4 cursor-grab active:cursor-grabbing"
+                animate={{ x: trackX }}
+                transition={{ type: "spring", stiffness: 260, damping: 32, mass: 0.9 }}
+                drag="x"
+                dragElastic={0.15}
+                dragMomentum={false}
+                onDragEnd={(_, info) => {
+                  const dx = info.offset.x;
+                  const vx = info.velocity.x;
+                  if (dx < -60 || vx < -400) advance(1);
+                  else if (dx > 60 || vx > 400) advance(-1);
+                }}
+              >
+                {studies.map((study) => (
                   <div
-                    className={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[90px] ${study.glow}`}
-                  />
-                  {study.confidential && (
-                    <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-mono">
-                      Confidential
-                    </span>
-                  )}
-                  {study.kicker && (
-                    <p className="text-xs uppercase tracking-[0.2em] text-foreground/40 mb-3 font-mono relative">
-                      {study.kicker}
-                    </p>
-                  )}
-                  <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4 relative pr-24">
-                    {study.name}
-                  </h2>
-                  <p className="text-base text-foreground/40 mb-8 leading-relaxed relative max-w-3xl">
-                    {study.blurb}
-                  </p>
-                  <div className="flex flex-wrap gap-2 relative">
-                    {study.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1.5 rounded-full bg-foreground/[0.06] text-foreground/50 border border-border"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    key={study.name}
+                    className="w-[88%] flex-shrink-0 flex"
+                  >
+                    <div className="w-full min-h-[360px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-8 sm:p-12 relative overflow-hidden select-none flex flex-col">
+                      <div
+                        className={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[90px] ${study.glow}`}
+                      />
+                      {study.confidential && (
+                        <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-mono">
+                          Confidential
+                        </span>
+                      )}
+                      {study.kicker && (
+                        <p className="text-xs uppercase tracking-[0.2em] text-foreground/40 mb-3 font-mono relative">
+                          {study.kicker}
+                        </p>
+                      )}
+                      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4 relative pr-24">
+                        {study.name}
+                      </h2>
+                      <p className="text-base text-foreground/40 leading-relaxed relative max-w-3xl">
+                        {study.blurb}
+                      </p>
+                      <div className="flex flex-wrap gap-2 relative mt-auto pt-8">
+                        {study.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs px-3 py-1.5 rounded-full bg-foreground/[0.06] text-foreground/50 border border-border"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+                ))}
+              </motion.div>
             </div>
 
             <div className="flex items-center justify-between mt-6">
@@ -361,7 +374,7 @@ function CaseStudy() {
                     key={s.name}
                     type="button"
                     aria-label={`Go to case study ${i + 1}`}
-                    onClick={() => setState(([cur]) => [i, i > cur ? 1 : -1])}
+                    onClick={() => setIndex(i)}
                     className={`h-1.5 rounded-full transition-all ${
                       i === index
                         ? "w-8 bg-foreground/60"
