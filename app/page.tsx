@@ -107,8 +107,8 @@ function Hero() {
               Now let AI take it further.
             </span>
           </h1>
-          <p className="text-lg text-foreground/40 max-w-lg leading-relaxed">
-            We help established businesses become AI native — faster
+          <p className="text-lg text-foreground/40 max-w-lg leading-relaxed text-balance">
+            We help established businesses become AI native&nbsp;— faster
             operations, less busywork, real results.
           </p>
           <button
@@ -250,8 +250,9 @@ function CaseStudy() {
     },
     {
       name: "Commercial Real Estate Owner",
+      kicker: "AI-native ops for a multi-tenant portfolio",
       blurb:
-        "Replaced the spreadsheet-and-PDF stack with AI-native ops — automated billing, lease intelligence, and tenant comms across the portfolio.",
+        "Replaced the spreadsheet-and-PDF stack with AI-native ops across a multi-tenant commercial portfolio — automated rent billing and NNN reconciliation, lease intelligence on renewal and assignment terms, and AI-drafted tenant comms. The owner now runs the building with a fraction of the usual ops overhead.",
       tags: [
         "Automated billing",
         "Lease intelligence",
