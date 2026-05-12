@@ -8,9 +8,11 @@ import ThemeToggle from "@/components/ThemeToggle";
 function FadeIn({
   children,
   delay = 0,
+  className,
 }: {
   children: React.ReactNode;
   delay?: number;
+  className?: string;
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
@@ -20,6 +22,7 @@ function FadeIn({
       initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      className={className}
     >
       {children}
     </motion.div>
@@ -234,9 +237,15 @@ function CaseStudy() {
     },
     {
       name: "Boston Tree Preservation",
+      kicker: "Operations modernization & sale prep",
       blurb:
-        "Modernized a 45-year-old company from paper to digital — and unlocked it for a successful acquisition.",
-      tags: ["Paper → Digital", "Salesforce CRM", "Acquisition-ready"],
+        "Took a 45-year-old tree care company off paper. Built out the CRM, digitized customer records and field operations, and trained the team on the new stack — leaving the business cleaner, more sellable, and ready for the acquisition that followed.",
+      tags: [
+        "Paper → Digital",
+        "Salesforce CRM",
+        "Field ops digitization",
+        "Acquisition-ready",
+      ],
       glow: "bg-indigo-500/10",
     },
     {
@@ -427,8 +436,8 @@ function Team() {
               linkedin: "https://www.linkedin.com/in/dejan-cabrilo-715a411/",
             },
           ].map((p, i) => (
-            <FadeIn key={p.name} delay={i * 0.08}>
-              <div className="rounded-2xl p-7 card-surface border border-border">
+            <FadeIn key={p.name} delay={i * 0.08} className="h-full">
+              <div className="rounded-2xl p-7 card-surface border border-border h-full flex flex-col">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium text-foreground">{p.name}</h3>
                   <a
