@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { flushSync } from "react-dom";
 import { useTheme } from "./ThemeProvider";
+import { track } from "@/lib/analytics";
 
 /**
  * Theme toggle with a View Transitions API circular reveal.
@@ -24,6 +25,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
 
   function handleClick() {
     const next = isDark ? "light" : "dark";
+    track("Theme Toggled", { theme: next });
     const btn = btnRef.current;
 
     // Feature-detect: View Transitions API
