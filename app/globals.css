@@ -190,3 +190,23 @@
     animation: none;
   }
 }
+
+/* Case-studies carousel: native CSS scroll-snap. No JS animation library
+   needed — the browser handles momentum, snap, and smooth scrolling. */
+.carousel-track {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.carousel-slide {
+  flex: 0 0 88%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}

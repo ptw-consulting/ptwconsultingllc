@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
 import ThemeToggle from "@/components/ThemeToggle";
 import { track } from "@/lib/analytics";
@@ -259,18 +258,59 @@ function CaseStudy() {
 
   const [index, setIndex] = useState(0);
   const count = studies.length;
-  const advance = (delta: number) =>
-    setIndex((i) => (i + delta + count) % count);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const scrollToIndex = (i: number) => {
+    const slide = slideRefs.current[i];
+    slide?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  };
+
+  // Watch which slide is most visible inside the track and sync `index`.
+  useEffect(() => {
+    const track = trackRef.current;
+    const slides = slideRefs.current.filter(
+      (s): s is HTMLDivElement => s !== null,
+    );
+    if (!track || slides.length === 0) return;
+
+    const ratios = new Map<Element, number>();
+    slides.forEach((s) => ratios.set(s, 0));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => ratios.set(e.target, e.intersectionRatio));
+        let bestRatio = -1;
+        let bestIdx = 0;
+        slides.forEach((s, i) => {
+          const r = ratios.get(s) ?? 0;
+          if (r > bestRatio) {
+            bestRatio = r;
+            bestIdx = i;
+          }
+        });
+        setIndex(bestIdx);
+      },
+      { root: track, threshold: [0.25, 0.5, 0.75, 0.9, 1] },
+    );
+
+    slides.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") setIndex((i) => (i + 1) % count);
+      if (e.key === "ArrowRight") scrollToIndex((index + 1) % count);
       else if (e.key === "ArrowLeft")
-        setIndex((i) => (i - 1 + count) % count);
+        scrollToIndex((index - 1 + count) % count);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [count]);
+  }, [index, count]);
 
   const firstRender = useRef(true);
   useEffect(() => {
@@ -280,13 +320,6 @@ function CaseStudy() {
     }
     track("Case Study Viewed", { study: studies[index].name });
   }, [index, studies]);
-
-  // Each slide is 88% of the track width; gap is 1rem between slides.
-  // Offset of 6% keeps the active slide centered with a peek of the
-  // neighboring slides on either side.
-  const slideWidthPct = 88;
-  const gapRem = 1;
-  const trackX = `calc(6% - ${index} * (${slideWidthPct}% + ${gapRem}rem))`;
 
   return (
     <section id="work" className="py-14 px-6">
@@ -305,7 +338,8 @@ function CaseStudy() {
         <FadeIn>
           <div className="relative">
             <div
-              className="relative overflow-hidden"
+              ref={trackRef}
+              className="carousel-track flex items-stretch gap-4"
               style={{
                 WebkitMaskImage:
                   "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
@@ -313,24 +347,13 @@ function CaseStudy() {
                   "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
               }}
             >
-              <motion.div
-                className="flex items-stretch gap-4 cursor-grab active:cursor-grabbing"
-                animate={{ x: trackX }}
-                transition={{ type: "spring", stiffness: 260, damping: 32, mass: 0.9 }}
-                drag="x"
-                dragElastic={0.15}
-                dragMomentum={false}
-                onDragEnd={(_, info) => {
-                  const dx = info.offset.x;
-                  const vx = info.velocity.x;
-                  if (dx < -60 || vx < -400) advance(1);
-                  else if (dx > 60 || vx > 400) advance(-1);
-                }}
-              >
-                {studies.map((study) => (
+              {studies.map((study, i) => (
                   <div
                     key={study.name}
-                    className="w-[88%] flex-shrink-0 flex"
+                    ref={(el) => {
+                      slideRefs.current[i] = el;
+                    }}
+                    className="carousel-slide flex"
                   >
                     <div className="w-full min-h-[360px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-8 sm:p-12 relative overflow-hidden select-none flex flex-col">
                       <div
@@ -367,14 +390,13 @@ function CaseStudy() {
                     </div>
                   </div>
                 ))}
-              </motion.div>
             </div>
 
             <div className="flex items-center justify-between mt-6">
               <button
                 type="button"
                 aria-label="Previous case study"
-                onClick={() => advance(-1)}
+                onClick={() => scrollToIndex((index - 1 + count) % count)}
                 className="w-9 h-9 rounded-full border border-border bg-foreground/[0.02] text-foreground/50 hover:text-foreground hover:bg-foreground/[0.06] transition flex items-center justify-center"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -388,7 +410,7 @@ function CaseStudy() {
                     key={s.name}
                     type="button"
                     aria-label={`Go to case study ${i + 1}`}
-                    onClick={() => setIndex(i)}
+                    onClick={() => scrollToIndex(i)}
                     className={`h-1.5 rounded-full transition-all ${
                       i === index
                         ? "w-8 bg-foreground/60"
@@ -401,7 +423,7 @@ function CaseStudy() {
               <button
                 type="button"
                 aria-label="Next case study"
-                onClick={() => advance(1)}
+                onClick={() => scrollToIndex((index + 1) % count)}
                 className="w-9 h-9 rounded-full border border-border bg-foreground/[0.02] text-foreground/50 hover:text-foreground hover:bg-foreground/[0.06] transition flex items-center justify-center"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
