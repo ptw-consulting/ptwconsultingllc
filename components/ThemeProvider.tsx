@@ -105,6 +105,9 @@ export function useTheme() {
 // vice versa). Stringified so it can be injected via dangerouslySetInnerHTML.
 export const themeBootstrapScript = `
 (function() {
+  // Mark JS as enabled so progressive-enhancement CSS rules (e.g. the
+  // scroll-triggered FadeIn) can hide content that JS will reveal.
+  document.documentElement.classList.add("js");
   try {
     var stored = localStorage.getItem("${STORAGE_KEY}");
     var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;

@@ -14,10 +14,43 @@ function FadeIn({
   delay?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Touch / reduced-motion users see content immediately; CSS pins
+    // opacity:1 for them, so we just mark visible and skip the observer.
+    if (
+      window.matchMedia(
+        "(pointer: coarse), (prefers-reduced-motion: reduce)",
+      ).matches
+    ) {
+      setVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "0px 0px -40px 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
-      className={`fade-in-section${className ? ` ${className}` : ""}`}
-      style={delay ? { animationDelay: `${delay}s` } : undefined}
+      ref={ref}
+      className={`fade-in-on-scroll${visible ? " in-view" : ""}${className ? ` ${className}` : ""}`}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
     </div>
