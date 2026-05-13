@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -17,8 +18,13 @@ export default function ContactForm() {
         body: new FormData(form),
         headers: { Accept: "application/json" },
       });
-      if (res.ok) { setStatus("success"); form.reset(); }
-      else { setStatus("error"); }
+      if (res.ok) {
+        setStatus("success");
+        form.reset();
+        track("Contact Form Submitted");
+      } else {
+        setStatus("error");
+      }
     } catch { setStatus("error"); }
   }
 

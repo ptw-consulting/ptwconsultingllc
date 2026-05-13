@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, themeBootstrapScript } from "@/components/ThemeProvider";
+import ScrollDepthTracker from "@/components/ScrollDepthTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
+        <ScrollDepthTracker />
         <Script
           async
           src="https://plausible.io/js/pa-BBapZVTyH4UyDZaF_M5Yz.js"

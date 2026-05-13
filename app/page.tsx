@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
 import ThemeToggle from "@/components/ThemeToggle";
+import { track } from "@/lib/analytics";
 
 function FadeIn({
   children,
@@ -280,6 +281,15 @@ function CaseStudy() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [count]);
+
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    track("Case Study Viewed", { study: studies[index].name });
+  }, [index, studies]);
 
   // Each slide is 88% of the track width; gap is 1rem between slides.
   // Offset of 6% keeps the active slide centered with a peek of the
