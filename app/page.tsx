@@ -91,12 +91,7 @@ function Hero() {
       <MeshGradient />
       <DotGrid />
       <div className="max-w-5xl mx-auto w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-6 fade-on-mount"
-        >
+        <div className="space-y-6 hero-fade-in">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/[0.06] border border-border text-xs text-foreground/50 tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             AI Transformation
@@ -118,7 +113,7 @@ function Hero() {
           >
             Start the conversation
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -352,7 +347,9 @@ function CaseStudy() {
                         </span>
                       )}
                       {study.kicker && (
-                        <p className="text-xs uppercase tracking-[0.2em] text-foreground/40 mb-3 font-mono relative">
+                        <p
+                          className={`text-xs uppercase tracking-[0.2em] text-foreground/40 mb-3 font-mono relative${study.confidential ? " pr-24" : ""}`}
+                        >
                           {study.kicker}
                         </p>
                       )}
