@@ -223,8 +223,8 @@ type Study = {
 function CaseStudy() {
   const studies: Study[] = [
     {
-      name: "Investor Accreditation Verification",
-      kicker: "Custom build for a Reg D 506(c) fund",
+      name: "Reg D 506(c) Private Credit Fund",
+      kicker: "AI-Native Investor Accreditation Verification Tool",
       blurb:
         "A verification app that automates the accredited-investor checks 506(c) funds normally pay big-law thousands per investor to run. Self-serve flows for net-worth, income, and professional-letter — human review only on edge cases.",
       tags: [
