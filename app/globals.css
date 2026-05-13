@@ -152,20 +152,10 @@
   }
 }
 
-/* Mobile: skip Framer Motion's animate-on-mount. The SSR HTML bakes
-   opacity:0 / translateY into the inline style of any element with
-   `.fade-on-mount`, which keeps content invisible on slow mobile hydration.
-   Force the resolved state via CSS so first paint shows the page. */
-@media (pointer: coarse) {
-  .fade-on-mount {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+/* Entrance animations are pure CSS so SSR'd HTML never carries opacity:0
+   inline. That keeps content visible immediately on slow mobile hydration.
+   Desktop sees the fade-in on page load; mobile + reduced-motion skip it. */
 
-/* Hero entrance — CSS keyframe so it doesn't depend on Framer Motion JS
-   hydration. SSR'd HTML has no opacity:0 inline, so mobile renders the
-   content immediately even if JS hasn't loaded yet. */
 @keyframes hero-fade-in {
   from {
     opacity: 0;
@@ -179,8 +169,24 @@
 .hero-fade-in {
   animation: hero-fade-in 0.8s ease-out;
 }
+
+@keyframes fade-in-section {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-in-section {
+  animation: fade-in-section 0.5s ease-out both;
+}
+
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .hero-fade-in {
+  .hero-fade-in,
+  .fade-in-section {
     animation: none;
   }
 }
