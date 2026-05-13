@@ -228,6 +228,8 @@ function CaseStudy() {
       blurb:
         "A verification app that automates the accredited-investor checks 506(c) funds normally pay big-law thousands per investor to run. Self-serve flows for net-worth, income, and professional-letter — human review only on edge cases.",
       tags: [
+        "Next.js + TypeScript",
+        "AI-orchestrated build",
         "OpenAI doc review",
         "Plaid income/asset pulls",
         "Async S3/SQS pipelines",
