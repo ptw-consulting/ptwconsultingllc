@@ -39,10 +39,12 @@ export default function RootLayout({
       <body>
         <ThemeProvider>{children}</ThemeProvider>
         <Script
-          defer
-          data-domain="ptwconsultingllc.com"
-          src="https://plausible.io/js/script.js"
+          async
+          src="https://plausible.io/js/pa-BBapZVTyH4UyDZaF_M5Yz.js"
         />
+        <Script id="plausible-init">
+          {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
+        </Script>
       </body>
     </html>
   );
