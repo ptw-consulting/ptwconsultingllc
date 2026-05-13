@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   title: "PTW Consulting — AI Transformation for Small Business",
   description:
     "You built something great. Now let AI take it further. PTW Consulting helps small businesses adopt AI that actually works.",
+  icons: {
+    icon: [
+      { url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -34,9 +34,23 @@ function readStored(): ThemeChoice {
   return v === "light" || v === "dark" || v === "system" ? v : "system";
 }
 
+function applyFavicon(resolved: Resolved) {
+  const href =
+    resolved === "dark" ? "/favicon-dark.svg" : "/favicon-light.svg";
+  document
+    .querySelectorAll('link[rel="icon"]')
+    .forEach((el) => el.parentNode?.removeChild(el));
+  const link = document.createElement("link");
+  link.rel = "icon";
+  link.type = "image/svg+xml";
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 function applyTheme(resolved: Resolved) {
   document.documentElement.dataset.theme = resolved;
   document.documentElement.style.colorScheme = resolved;
+  applyFavicon(resolved);
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -99,6 +113,17 @@ export const themeBootstrapScript = `
       : (prefersDark ? "dark" : "light");
     document.documentElement.dataset.theme = resolved;
     document.documentElement.style.colorScheme = resolved;
+    var faviconHref = resolved === "dark"
+      ? "/favicon-dark.svg"
+      : "/favicon-light.svg";
+    document
+      .querySelectorAll('link[rel="icon"]')
+      .forEach(function (el) { el.parentNode && el.parentNode.removeChild(el); });
+    var link = document.createElement("link");
+    link.rel = "icon";
+    link.type = "image/svg+xml";
+    link.href = faviconHref;
+    document.head.appendChild(link);
   } catch (e) {
     document.documentElement.dataset.theme = "dark";
     document.documentElement.style.colorScheme = "dark";
