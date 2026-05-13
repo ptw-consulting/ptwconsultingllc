@@ -151,3 +151,14 @@
     animation: none !important;
   }
 }
+
+/* Mobile: skip Framer Motion's animate-on-mount. The SSR HTML bakes
+   opacity:0 / translateY into the inline style of any element with
+   `.fade-on-mount`, which keeps content invisible on slow mobile hydration.
+   Force the resolved state via CSS so first paint shows the page. */
+@media (pointer: coarse) {
+  .fade-on-mount {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

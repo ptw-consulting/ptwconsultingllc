@@ -23,7 +23,7 @@ function FadeIn({
       initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={className}
+      className={`fade-on-mount${className ? ` ${className}` : ""}`}
     >
       {children}
     </motion.div>
@@ -95,7 +95,7 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-6"
+          className="space-y-6 fade-on-mount"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/[0.06] border border-border text-xs text-foreground/50 tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
