@@ -89,7 +89,8 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    /* TEMP: Geist removed to test font-loading mobile bug. Restore after diagnosis. */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 }
 
