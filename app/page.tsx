@@ -66,10 +66,15 @@ function FadeIn({
   );
 }
 
-/* ─── Animated mesh gradient ─────────────────────────────────────────── */
-// TEMP: disabled to test mobile compositor / blur layer hypothesis. Restore after diagnosis.
+/* ─── Mesh gradient (static — animate-pulse removed for mobile compositor cost) ─ */
 function MeshGradient() {
-  return null;
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+      <div className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full opacity-20 blur-[60px] bg-indigo-600 light:opacity-50 light:bg-indigo-500" />
+      <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full opacity-15 blur-[60px] bg-cyan-500 light:opacity-45 light:bg-cyan-400" />
+      <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] rounded-full opacity-10 blur-[60px] bg-violet-500 light:opacity-40 light:bg-violet-400" />
+    </div>
+  );
 }
 
 /* ─── Subtle dot grid ────────────────────────────────────────────────── */
@@ -124,7 +129,7 @@ function Hero() {
       <div className="max-w-5xl mx-auto w-full">
         <div className="space-y-6 hero-fade-in">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/[0.06] border border-border text-xs text-foreground/50 tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             AI Transformation
           </div>
           <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.08] text-foreground">
@@ -163,7 +168,7 @@ function Halo() {
         </FadeIn>
         <FadeIn delay={0.06}>
           <div className="rounded-2xl p-10 sm:p-14 card-surface border border-border relative overflow-hidden">
-            {/* TEMP: blur glow disabled to test mobile compositor hypothesis */}
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-[40px]" />
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4 relative">
               HALO Businesses
             </h2>
@@ -398,7 +403,9 @@ function CaseStudy() {
                     className="carousel-slide flex"
                   >
                     <div className="w-full min-h-[280px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-6 sm:p-12 relative overflow-hidden select-none flex flex-col">
-                      {/* TEMP: per-card blur glow disabled to test mobile compositor hypothesis */}
+                      <div
+                        className={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[40px] ${study.glow}`}
+                      />
                       {study.confidential && (
                         <span className="absolute top-5 right-5 text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-mono">
                           Confidential
