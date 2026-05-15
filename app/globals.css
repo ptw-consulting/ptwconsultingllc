@@ -170,30 +170,26 @@
   animation: hero-fade-in 0.8s ease-out;
 }
 
-/* Scroll-triggered FadeIn (desktop with JS only). The `html.js` class is
-   added by the bootstrap script in <head>, so no-JS users see content at
-   its final state. The component sets `.in-view` once IntersectionObserver
-   reports the element entering the viewport. */
-html.js .fade-in-on-scroll {
+/* Scroll-triggered FadeIn — JS opt-in. SSR'd HTML never carries opacity:0,
+   so slow hydration on mobile cannot leave content stranded invisible. The
+   FadeIn component adds `.fade-in-pending` only on devices that should
+   animate (desktop, hover:hover, reduced-motion off, viewport >= 1024px).
+   IntersectionObserver then adds `.in-view` to fade the element in. */
+.fade-in-pending {
   opacity: 0;
   transform: translateY(16px);
   transition:
     opacity 0.5s ease-out,
     transform 0.5s ease-out;
 }
-html.js .fade-in-on-scroll.in-view {
+.fade-in-pending.in-view {
   opacity: 1;
   transform: none;
 }
 
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .hero-fade-in {
     animation: none;
-  }
-  html.js .fade-in-on-scroll {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 }
 

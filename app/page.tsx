@@ -15,21 +15,22 @@ function FadeIn({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [pending, setPending] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Touch / reduced-motion users see content immediately; CSS pins
-    // opacity:1 for them, so we just mark visible and skip the observer.
+    // Animation is JS opt-in — SSR'd HTML is never hidden, so slow hydration
+    // can't strand content invisible. Skip on touch / small / reduced-motion.
     if (
       window.matchMedia(
-        "(pointer: coarse), (prefers-reduced-motion: reduce)",
+        "(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce), (max-width: 1023px)",
       ).matches
     ) {
-      setVisible(true);
       return;
     }
+    setPending(true);
     const observer = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -46,11 +47,19 @@ function FadeIn({
     return () => observer.disconnect();
   }, []);
 
+  const classes = [
+    pending && "fade-in-pending",
+    visible && "in-view",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div
       ref={ref}
-      className={`fade-in-on-scroll${visible ? " in-view" : ""}${className ? ` ${className}` : ""}`}
-      style={delay ? { transitionDelay: `${delay}s` } : undefined}
+      className={classes || undefined}
+      style={pending && delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
     </div>
