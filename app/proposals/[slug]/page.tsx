@@ -71,9 +71,16 @@ export default async function ProposalPage({
   const bundle: CipherBundle = { ciphertext, salt, iv, iterations };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-foreground/[0.06]">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div className="relative min-h-screen flex flex-col overflow-x-hidden">
+      {/* Subtle mesh accent — same primitives the homepage uses (capped blur,
+          low opacity, static, no animate-pulse). Stays mobile-safe. */}
+      <div className="absolute inset-x-0 top-0 -z-10 h-[480px] overflow-hidden pointer-events-none" aria-hidden>
+        <div className="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-[60px] bg-indigo-500 light:opacity-40 light:bg-indigo-400" />
+        <div className="absolute -top-20 right-[-6rem] w-[22rem] h-[22rem] rounded-full opacity-15 blur-[60px] bg-cyan-400 light:opacity-35 light:bg-cyan-300" />
+      </div>
+
+      <header>
+        <div className="max-w-3xl mx-auto px-6 py-5 flex items-center justify-between">
           <Link
             href="/"
             className="text-sm font-medium tracking-tight hover:opacity-80 transition-opacity"
@@ -84,26 +91,31 @@ export default async function ProposalPage({
         </div>
       </header>
 
-      <main className="flex-1 max-w-3xl w-full mx-auto px-6 py-12">
-        <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest text-foreground/50 mb-2">
-            Proposal
+      <main className="flex-1 max-w-3xl w-full mx-auto px-6 pt-8 pb-16 sm:pt-14">
+        <div className="mb-14">
+          <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-foreground/45 mb-5">
+            Proposal · {frontmatter.date}
           </p>
-          <h1 className="text-3xl sm:text-4xl font-medium tracking-tight mb-3">
+          <h1 className="text-4xl sm:text-5xl font-medium tracking-tight leading-[1.05] mb-5">
             {frontmatter.title ?? "Engagement proposal"}
           </h1>
-          <p className="text-sm text-foreground/70">
-            Prepared for {frontmatter.prepared_for ?? frontmatter.client} ·{" "}
-            {frontmatter.date}
+          <p className="text-sm text-foreground/60">
+            Prepared for{" "}
+            <span className="text-foreground/85">
+              {frontmatter.prepared_for ?? frontmatter.client}
+            </span>
           </p>
         </div>
 
         <ProposalUnlock slug={slug} bundle={bundle} />
       </main>
 
-      <footer className="border-t border-foreground/[0.06]">
-        <div className="max-w-3xl mx-auto px-6 py-6 text-xs text-foreground/50">
-          © PTW Consulting LLC · Boston, MA
+      <footer className="border-t border-foreground/[0.06] mt-8">
+        <div className="max-w-3xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-foreground/45">
+          <span>© PTW Consulting LLC · Miami, FL</span>
+          <span className="font-mono tracking-wide">
+            Encrypted · decrypts in your browser
+          </span>
         </div>
       </footer>
     </div>
