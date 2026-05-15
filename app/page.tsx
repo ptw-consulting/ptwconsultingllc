@@ -238,6 +238,7 @@ type Study = {
   name: string;
   kicker?: string;
   blurb: string;
+  blurbShort?: string;
   tags: string[];
   glow: string;
   confidential?: boolean;
@@ -250,6 +251,8 @@ function CaseStudy() {
       kicker: "AI-Native Investor Accreditation Verification Tool",
       blurb:
         "A verification app that automates the accredited-investor checks 506(c) funds normally pay big-law thousands per investor to run. Self-serve flows for net-worth, income, and professional-letter — human review only on edge cases.",
+      blurbShort:
+        "Automates the accredited-investor checks 506(c) funds normally pay big-law thousands per investor to run.",
       tags: [
         "Next.js + TypeScript",
         "AI-orchestrated build",
@@ -265,6 +268,8 @@ function CaseStudy() {
       kicker: "Operations modernization & sale prep",
       blurb:
         "Took a 45-year-old tree care company off paper. Built out the CRM, digitized customer records and field operations, and trained the team on the new stack — leaving the business cleaner, more sellable, and ready for the acquisition that followed.",
+      blurbShort:
+        "Took a 45-year-old tree care company off paper — CRM, digitized field ops, team trained. Achieved higher multiple on exit.",
       tags: [
         "Paper → Digital",
         "Salesforce CRM",
@@ -278,6 +283,8 @@ function CaseStudy() {
       kicker: "AI-native ops for a multi-tenant portfolio",
       blurb:
         "Replaced the spreadsheet-and-PDF stack with AI-native ops across a multi-tenant commercial portfolio — automated rent billing and NNN reconciliation, lease intelligence on renewal and assignment terms, and AI-drafted tenant comms. The owner now runs the building with a fraction of the usual ops overhead.",
+      blurbShort:
+        "Replaced the spreadsheet-and-PDF stack with AI-native ops — automated billing, lease intelligence, AI-drafted tenant comms.",
       tags: [
         "Automated billing",
         "Lease intelligence",
@@ -386,7 +393,7 @@ function CaseStudy() {
                     }}
                     className="carousel-slide flex"
                   >
-                    <div className="w-full min-h-[360px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-8 sm:p-12 relative overflow-hidden select-none flex flex-col">
+                    <div className="w-full min-h-[280px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-6 sm:p-12 relative overflow-hidden select-none flex flex-col">
                       <div
                         className={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[90px] ${study.glow}`}
                       />
@@ -402,13 +409,24 @@ function CaseStudy() {
                           {study.kicker}
                         </p>
                       )}
-                      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4 relative pr-24">
+                      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-3 sm:mb-4 relative pr-24">
                         {study.name}
                       </h2>
-                      <p className="text-base text-foreground/40 leading-relaxed relative max-w-3xl">
-                        {study.blurb}
-                      </p>
-                      <div className="flex flex-wrap gap-2 relative mt-auto pt-8">
+                      {study.blurbShort ? (
+                        <>
+                          <p className="text-base text-foreground/40 leading-relaxed relative max-w-3xl sm:hidden">
+                            {study.blurbShort}
+                          </p>
+                          <p className="text-base text-foreground/40 leading-relaxed relative max-w-3xl hidden sm:block">
+                            {study.blurb}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-base text-foreground/40 leading-relaxed relative max-w-3xl">
+                          {study.blurb}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-2 relative mt-auto pt-5 sm:pt-8">
                         {study.tags.map((tag) => (
                           <span
                             key={tag}
