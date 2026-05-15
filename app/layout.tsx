@@ -46,13 +46,14 @@ export default function RootLayout({
       <body>
         <ThemeProvider>{children}</ThemeProvider>
         <ScrollDepthTracker />
-        <Script
+        {/* TEMP: Plausible disabled to test mobile load issue. Restore after diagnosis. */}
+        {/* <Script
           async
           src="https://plausible.io/js/pa-BBapZVTyH4UyDZaF_M5Yz.js"
         />
         <Script id="plausible-init">
           {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
-        </Script>
+        </Script> */}
       </body>
     </html>
   );
