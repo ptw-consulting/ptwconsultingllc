@@ -575,9 +575,17 @@ function Contact() {
 function Footer() {
   return (
     <footer className="border-t border-border px-6 py-5">
-      <div className="max-w-5xl mx-auto flex justify-between items-center text-xs text-foreground/25">
+      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-xs text-foreground/25">
         <span>© {new Date().getFullYear()} PTW Consulting LLC</span>
-        <span>Miami, FL</span>
+        <div className="flex items-center gap-4">
+          <a
+            href="/privacy/"
+            className="hover:text-foreground/50 transition-colors"
+          >
+            Privacy
+          </a>
+          <span>Miami, FL</span>
+        </div>
       </div>
     </footer>
   );

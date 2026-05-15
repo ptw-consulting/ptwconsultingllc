@@ -112,7 +112,15 @@ export default async function ProposalPage({
 
       <footer className="border-t border-foreground/[0.06] mt-8">
         <div className="max-w-3xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-foreground/45">
-          <span>© PTW Consulting LLC · Miami, FL</span>
+          <div className="flex items-center gap-4">
+            <span>© PTW Consulting LLC · Miami, FL</span>
+            <Link
+              href="/privacy/"
+              className="hover:text-foreground/70 transition-colors"
+            >
+              Privacy
+            </Link>
+          </div>
           <span className="font-mono tracking-wide">
             Encrypted · decrypts in your browser
           </span>

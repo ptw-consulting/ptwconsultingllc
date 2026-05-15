@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider, themeBootstrapScript } from "@/components/ThemeProvider";
 import ScrollDepthTracker from "@/components/ScrollDepthTracker";
+import CookieBanner from "@/components/CookieBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,7 +45,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <CookieBanner />
+        </ThemeProvider>
         <ScrollDepthTracker />
         <Script
           async
