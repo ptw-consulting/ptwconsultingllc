@@ -402,7 +402,7 @@ function CaseStudy() {
                     }}
                     className="carousel-slide flex"
                   >
-                    <div className="w-full min-h-[280px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-6 sm:p-12 relative overflow-hidden isolate select-none flex flex-col">
+                    <div className="w-full min-h-[280px] sm:min-h-[320px] rounded-2xl border border-border bg-foreground/[0.02] p-6 sm:p-12 relative overflow-hidden isolate [clip-path:inset(0_round_1rem)] select-none flex flex-col">
                       <div
                         className={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[40px] ${study.glow}`}
                       />
