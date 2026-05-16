@@ -44,7 +44,7 @@ export default function CookieBanner() {
           >
             Plausible
           </a>{" "}
-          for privacy-friendly analytics.{" "}
+          for analytics.{" "}
           <Link
             href="/privacy"
             className="underline decoration-foreground/30 hover:decoration-foreground/60"
