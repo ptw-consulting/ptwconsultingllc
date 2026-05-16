@@ -35,7 +35,7 @@ export default function CookieBanner() {
     >
       <div className="bg-popover border border-foreground/10 rounded-lg shadow-lg px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-3">
         <p className="text-xs text-foreground/80 flex-1">
-          No cookies, no cross-site tracking. We use{" "}
+          We use{" "}
           <a
             href="https://plausible.io"
             target="_blank"
